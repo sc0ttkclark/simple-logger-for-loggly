@@ -6,9 +6,11 @@ This is a small plugin that integrates Loggly logging with WordPress.
 
 The configuration is currently all done via PHP constants that you can define in your `wp-config.php` file.
 
-### Token
+### REQUIRED: Token
 
-See `https://{username}.loggly.com/tokens/` to get your token
+You MUST set a token to use the API. All other configuration is optional.
+
+See `https://{username}.loggly.com/tokens/` to get your token.
 
 ```php
 define( 'SIMPLE_PHP_API_FOR_LOGGLY_TOKEN', 'abcdef' );
