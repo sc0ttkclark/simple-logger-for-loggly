@@ -117,7 +117,7 @@ class Logger {
 
 		$json = json_encode( $log_data );
 
-		if ( str_contains( $this->destination, '%s' ) ) {
+		if ( ! str_contains( $this->destination, '%s' ) ) {
 			return new WP_Error(
 				'simple-logger-for-loggly-invalid-destination',
 				esc_html(
@@ -143,7 +143,7 @@ class Logger {
 		}
 
 		$result = wp_remote_post(
-			$this->destination,
+			sprintf($this->destination, $this->token),
 			[
 				'body'    => $json,
 				'headers' => [
@@ -152,7 +152,21 @@ class Logger {
 			],
 		);
 
-		return ! is_wp_error( $result ) && '{"response":"ok"}' === wp_remote_retrieve_body( $result );
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$response_body = wp_remote_retrieve_body( $result );
+
+		if ( 'Invalid API key' === $response_body ) {
+			return new WP_Error(
+				'simple-logger-for-loggly-invalid-api-key',
+				esc_html__( 'Invalid Loggly API token, unable to authenticate with the Loggly API.', 'simple-logger-for-loggly' ),
+			);
+		}
+
+		// The spaces in this are part of the normal response.
+		return '{"response" : "ok"}' === $response_body || '{"response":"ok"}' === $response_body;
 	}
 
 	/**
