@@ -17,7 +17,7 @@
  *
  * See https://{username}.loggly.com/tokens/ to get your token.
  */
-// define( 'SIMPLE_PHP_API_FOR_LOGGLY_TOKEN', 'abcdef' );
+// define( 'SIMPLE_LOGGER_FOR_LOGGLY_TOKEN', 'abcdef' );
 
 require_once __DIR__ . '/src/Logger.php';
 
