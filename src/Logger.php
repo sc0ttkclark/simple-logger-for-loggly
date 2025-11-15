@@ -104,6 +104,12 @@ class Logger {
 	) {
 		$from_url = parse_url( is_multisite() ? network_site_url() : site_url(), PHP_URL_HOST );
 
+		if ( is_string( $data ) ) {
+			$data = [
+				'message' => $data,
+			];
+		}
+
 		$log_data = [
 			'timestamp' => date_i18n( 'M d H:i:s' ),
 			'url'       => $from_url,
